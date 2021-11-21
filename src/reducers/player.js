@@ -12,6 +12,17 @@ const playerReducer = (state = initialState, action) => {
                 players: action.payload
             }
 
+        case types.INCREASE_SCORE:
+            return {
+                ...state,
+                players: action.payload
+            }
+        case types.INCREASE_SCORE:
+            return {
+                ...state,
+                players: action.payload
+            }
+    
         default:
             return {
                 ...state
