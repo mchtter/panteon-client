@@ -1,33 +1,33 @@
-import * as types from "../actions/types"
+import * as types from "../actions/types";
 
 const initialState = {
-    players: []
-}
+  players: [],
+};
 
 const playerReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case types.FETCH_PLAYERS:
-            return {
-                ...state,
-                players: action.payload
-            }
+  switch (action.type) {
+    case types.FETCH_PLAYERS:
+      return {
+        ...state,
+        players: action.payload,
+      };
 
-        case types.INCREASE_SCORE:
-            return {
-                ...state,
-                players: action.payload
-            }
-        case types.INCREASE_SCORE:
-            return {
-                ...state,
-                players: action.payload
-            }
-    
-        default:
-            return {
-                ...state
-            }
-    }
-}
+    case types.INCREASE_SCORE:
+      return {
+        ...state,
+        players: action.payload,
+      };
+    case types.DECREASE_SCORE:
+      return {
+        ...state,
+        players: action.payload,
+      };
 
-export default playerReducer
+    default:
+      return {
+        ...state,
+      };
+  }
+};
+
+export default playerReducer;
