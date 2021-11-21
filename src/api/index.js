@@ -1,58 +1,24 @@
 import axios from "axios";
-// import { useEffect, useState } from "react";
 
 export const getData = async () => {
-  let players;
-  await axios.get("http://localhost:5000/players").then((res) => {
-    players = res.data;
-  });
-  return players;
+  let players = await axios.get("http://localhost:5000/players");
+  console.log(players.data);
+  return players.data;
 };
 
-export const increaseData = (data) => {
-  console.log(data, "buraya geldi");
-  axios
-    .post("http://localhost:5000/update/increase", data)
-    .then((res) => {
-      console.log("res", res);
-    })
-    .catch((err) => {
-      console.log("err", err);
-    });
+export const increaseData = async (data) => {
+  await axios.post("http://localhost:5000/update/increase", data);
 };
 
-export const decreaseData = (data) => {
-  console.log(data, "buraya geldi");
-  axios
-    .post("http://localhost:5000/update/decrease", data)
-    .then((res) => {
-      console.log("res", res);
-    })
-    .catch((err) => {
-      console.log("err", err);
-    });
+export const decreaseData = async (data) => {
+  await axios.post("http://localhost:5000/update/decrease", data);
 };
 
-export const increaseMoney = (data) => {
-  console.log(data, "buraya geldi");
-  axios
-    .post("http://localhost:5000/money/increase", data)
-    .then((res) => {
-      console.log("res", res);
-    })
-    .catch((err) => {
-      console.log("err", err);
-    });
+export const increaseMoney = async (data) => {
+  await axios.post("http://localhost:5000/money/increase", data);
 };
 
-export const decreaseMoney = (data) => {
+export const decreaseMoney = async (data) => {
   console.log(data, "buraya geldi");
-  axios
-    .post("http://localhost:5000/money/decrease", data)
-    .then((res) => {
-      console.log("res", res);
-    })
-    .catch((err) => {
-      console.log("err", err);
-    });
+  await axios.post("http://localhost:5000/money/decrease", data);
 };

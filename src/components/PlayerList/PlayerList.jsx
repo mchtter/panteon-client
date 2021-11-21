@@ -8,7 +8,7 @@ import {
   decreaseMoney,
 } from "../../api/index.js";
 import Header from "../Header/Header";
-
+import axios from "axios";
 import { Grid, GridColumn } from "@progress/kendo-react-grid";
 import { Button } from "@progress/kendo-react-buttons";
 import "@progress/kendo-theme-default/dist/all.css";
@@ -16,40 +16,39 @@ import "./PlayerList.css";
 
 const PlayerList = (props) => {
   const [player, setPlayer] = useState([]);
+
   useEffect(() => {
-    setPlayer();
+    getData().then((res) => {
+      setPlayer(res);
+    });
   }, []);
 
-  getData().then((res) => {
-    setPlayer(res);
-  });
+  const increase = (data) => {
+    const existingPlayerItem = player.find(
+      (playerItem) => playerItem._id === data._id
+    );
 
-  const increase = (id) => {
-    increaseData(id);
-    getData().then((res) => {
-      setPlayer(res);
-    });
+    if (existingPlayerItem) {
+      let newPlayer = player.map((playerItem) =>
+        playerItem._id === data._id
+          ? { ...playerItem, dailyDiff: playerItem.dailyDiff + 1 }
+          : playerItem
+      );
+      setPlayer(newPlayer);
+      increaseData(data);
+    }
   };
 
-  const decrease = (id) => {
-    decreaseData(id);
-    getData().then((res) => {
-      setPlayer(res);
-    });
+  const decrease = (data) => {
+    decreaseData(data);
   };
 
-  const increaseMon = (id) => {
-    increaseMoney(id);
-    getData().then((res) => {
-      setPlayer(res);
-    });
+  const increaseMon = (data) => {
+    increaseMoney(data);
   };
 
-  const decreaseMon = (id) => {
-    decreaseMoney(id);
-    getData().then((res) => {
-      setPlayer(res);
-    });
+  const decreaseMon = (data) => {
+    decreaseMoney(data);
   };
 
   return (
@@ -57,17 +56,25 @@ const PlayerList = (props) => {
       <Header />
       {
         <Grid
-          pageable={true}
+          // pageable={true}
           data={player}
-          style={{ height: "600px", marginLeft: "100px", marginRight: "100px" }}
+          style={{ height: "600px", marginLeft: "30px", marginRight: "30px" }}
         >
-          <GridColumn field="country" width="100px"></GridColumn>
-          <GridColumn field="username" width="250px"></GridColumn>
-          <GridColumn field="rank" width="100px"></GridColumn>
-          <GridColumn field="money"></GridColumn>
+          <GridColumn
+            field="country"
+            title="Country"
+            className="country"
+          ></GridColumn>
+          <GridColumn field="username" title="Username"></GridColumn>
+          <GridColumn
+            field="rank"
+            title="User Rank"
+            className="userRank"
+          ></GridColumn>
+          <GridColumn field="money" title="User Money"></GridColumn>
           <GridColumn
             field="dailyDiff"
-            width="100px"
+            title="Daily Change"
             cell={(data) => (
               <td
                 style={{
@@ -85,39 +92,51 @@ const PlayerList = (props) => {
             )}
           ></GridColumn>
           <GridColumn
-            field="DailyDiff || Money"
+            title="DailyDiff || Money"
             cell={(data) => (
-              <td>
-                <th style={{ textAlign: "center" }}>
-                  DailyDiff
+              <td className="actions" style={{ textAlign: "center" }}>
+                <div className="actionsButton">
                   <Button
                     icon="minus"
-                    style={{ marginLeft: "10px" }}
-                    onClick={() => decrease(data.dataItem._id)}
+                    onClick={() => decrease(data.dataItem)}
                   ></Button>
                   <Button
                     icon="plus"
-                    onClick={() => increase(data.dataItem._id)}
+                    onClick={() => increase(data.dataItem)}
                   ></Button>
-                </th>
-
-                <th style={{ textAlign: "center" }}>
-                  Money
+                </div>
+                <div className="actionsButton">
                   <Button
                     icon="minus"
-                    style={{ marginLeft: "10px" }}
-                    onClick={() => decreaseMon(data.dataItem._id)}
+                    onClick={() => decreaseMon(data.dataItem)}
                   ></Button>
                   <Button
                     icon="plus"
-                    onClick={() => increaseMon(data.dataItem._id)}
+                    onClick={() => increaseMon(data.dataItem)}
                   ></Button>
-                </th>
+                </div>
               </td>
             )}
           ></GridColumn>
         </Grid>
       }
+      <style>{`
+          .k-cell-inner > .k-link {
+            justify-content: space-around;
+          }
+          .k-grid tr {
+            text-align: center;
+          }
+          .actions {
+            display: flex;
+            justify-content: space-between
+          }
+          .actionsButton {
+            margin: 10px;
+            
+          }
+      
+      `}</style>
     </>
   );
 };
