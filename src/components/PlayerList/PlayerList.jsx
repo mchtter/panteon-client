@@ -8,7 +8,7 @@ import {
   decreaseMoney,
 } from "../../api/index.js";
 import Header from "../Header/Header";
-import axios from "axios";
+
 import { Grid, GridColumn } from "@progress/kendo-react-grid";
 import { Button } from "@progress/kendo-react-buttons";
 import "@progress/kendo-theme-default/dist/all.css";
@@ -16,12 +16,13 @@ import "./PlayerList.css";
 
 const PlayerList = (props) => {
   const [player, setPlayer] = useState([]);
+  const [stateChange, setStateChange] = useState(true);
 
   useEffect(() => {
     getData().then((res) => {
       setPlayer(res);
     });
-  }, []);
+  }, [stateChange]);
 
   const increase = (data) => {
     const existingPlayerItem = player.find(
@@ -31,24 +32,78 @@ const PlayerList = (props) => {
     if (existingPlayerItem) {
       let newPlayer = player.map((playerItem) =>
         playerItem._id === data._id
-          ? { ...playerItem, dailyDiff: playerItem.dailyDiff + 1 }
+          ? {
+              ...playerItem,
+              dailyDiff: playerItem.dailyDiff + 1,
+              weeklyDiff: playerItem.weeklyDiff + 1,
+            }
           : playerItem
       );
       setPlayer(newPlayer);
-      increaseData(data);
     }
+    increaseData(data);
+    setStateChange(!stateChange);
   };
 
   const decrease = (data) => {
+    const existingPlayerItem = player.find(
+      (playerItem) => playerItem._id === data._id
+    );
+
+    if (existingPlayerItem) {
+      let newPlayer = player.map((playerItem) =>
+        playerItem._id === data._id
+          ? {
+              ...playerItem,
+              dailyDiff: playerItem.dailyDiff - 1,
+              weeklyDiff: playerItem.weeklyDiff - 1,
+            }
+          : playerItem
+      );
+      setPlayer(newPlayer);
+    }
     decreaseData(data);
+    setStateChange(!stateChange);
   };
 
   const increaseMon = (data) => {
+    const existingPlayerItem = player.find(
+      (playerItem) => playerItem._id === data._id
+    );
+
+    if (existingPlayerItem) {
+      let newPlayer = player.map((playerItem) =>
+        playerItem._id === data._id
+          ? {
+              ...playerItem,
+              dailyDiff: playerItem.money + 100,
+            }
+          : playerItem
+      );
+      setPlayer(newPlayer);
+    }
     increaseMoney(data);
+    setStateChange(!stateChange);
   };
 
   const decreaseMon = (data) => {
+    const existingPlayerItem = player.find(
+      (playerItem) => playerItem._id === data._id
+    );
+
+    if (existingPlayerItem) {
+      let newPlayer = player.map((playerItem) =>
+        playerItem._id === data._id
+          ? {
+              ...playerItem,
+              dailyDiff: playerItem.money - 100,
+            }
+          : playerItem
+      );
+      setPlayer(newPlayer);
+    }
     decreaseMoney(data);
+    setStateChange(!stateChange);
   };
 
   return (
