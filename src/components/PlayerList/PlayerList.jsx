@@ -126,7 +126,12 @@ const PlayerList = (props) => {
             title="User Rank"
             className="userRank"
           ></GridColumn>
-          <GridColumn field="money" title="User Money"></GridColumn>
+          <GridColumn
+            field="money"
+            title="User Money"
+            // TODO: Kullanıcı paralarını daha düzgün gösterilecek, küsüratlar kaldırılacak
+            cell={(data) => <td>{data.dataItem.money.slice(".")}</td>}
+          ></GridColumn>
           <GridColumn
             field="dailyDiff"
             title="Daily Change"

@@ -1,12 +1,12 @@
-import React from 'react'
-import PlayerList from './components/PlayerList/PlayerList'
+import React from "react";
+import PlayerList from "./components/PlayerList/PlayerList";
 
 const App = () => {
   return (
     <>
       <PlayerList />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
