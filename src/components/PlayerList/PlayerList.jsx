@@ -128,9 +128,9 @@ const PlayerList = (props) => {
           ></GridColumn>
           <GridColumn
             field="money"
+            format="{0:n0}"
             title="User Money"
-            // TODO: Kullanıcı paralarını daha düzgün gösterilecek, küsüratlar kaldırılacak
-            cell={(data) => <td>{data.dataItem.money.slice(".")}</td>}
+
           ></GridColumn>
           <GridColumn
             field="dailyDiff"
