@@ -76,7 +76,7 @@ const PlayerList = (props) => {
         playerItem._id === data._id
           ? {
               ...playerItem,
-              dailyDiff: playerItem.money + 100,
+              dailyDiff: playerItem.money + 100.0,
             }
           : playerItem
       );
@@ -96,7 +96,7 @@ const PlayerList = (props) => {
         playerItem._id === data._id
           ? {
               ...playerItem,
-              dailyDiff: playerItem.money - 100,
+              dailyDiff: playerItem.money - 100.0,
             }
           : playerItem
       );
