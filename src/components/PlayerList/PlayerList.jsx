@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from "react";
-// import { connect } from 'react-redux'
 import {
   getData,
   increaseData,
@@ -13,10 +12,19 @@ import { Grid, GridColumn } from "@progress/kendo-react-grid";
 import { Button } from "@progress/kendo-react-buttons";
 import "@progress/kendo-theme-default/dist/all.css";
 import "./PlayerList.css";
+const initialDataState = {
+  skip: 0,
+  take: 10,
+};
 
 const PlayerList = (props) => {
   const [player, setPlayer] = useState([]);
   const [stateChange, setStateChange] = useState(true);
+  const [page, setPage] = useState(initialDataState);
+
+  const pageChange = (event) => {
+    setPage(event.page);
+  };
 
   useEffect(() => {
     getData().then((res) => {
@@ -76,7 +84,7 @@ const PlayerList = (props) => {
         playerItem._id === data._id
           ? {
               ...playerItem,
-              dailyDiff: playerItem.money + 100.0,
+              money: playerItem.money + 100.0,
             }
           : playerItem
       );
@@ -96,7 +104,7 @@ const PlayerList = (props) => {
         playerItem._id === data._id
           ? {
               ...playerItem,
-              dailyDiff: playerItem.money - 100.0,
+              money: playerItem.money - 100.0,
             }
           : playerItem
       );
@@ -111,8 +119,13 @@ const PlayerList = (props) => {
       <Header />
       {
         <Grid
-          // pageable={true}
-          data={player}
+        data={player.slice(page.skip, page.take + page.skip)}
+        skip={page.skip}
+        take={page.take}
+        total={player.length}
+          pageable={true}
+          onPageChange={pageChange}
+
           style={{ height: "600px", marginLeft: "30px", marginRight: "30px" }}
         >
           <GridColumn
